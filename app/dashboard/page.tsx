@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import LogoutButton from './logout-button'
+import ProjectsPanel from './projects-panel'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -14,8 +15,8 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center px-6">
-      <div className="text-center">
+    <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center px-6 py-12">
+      <div className="flex w-full max-w-2xl flex-col items-center text-center">
         <p className="text-zinc-400">Welcome to</p>
 
         <h1 className="mt-2 text-5xl font-bold">
@@ -31,6 +32,7 @@ export default async function DashboardPage() {
         </p>
 
         <LogoutButton />
+        <ProjectsPanel />
 
         <p className="mt-10 text-sm text-zinc-600">
           This page is private.
