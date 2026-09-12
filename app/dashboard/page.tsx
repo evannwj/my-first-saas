@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import LogoutButton from './logout-button'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -28,6 +29,8 @@ export default async function DashboardPage() {
         <p className="mt-2 text-lg font-semibold">
           {user.email}
         </p>
+
+        <LogoutButton />
 
         <p className="mt-10 text-sm text-zinc-600">
           This page is private.
