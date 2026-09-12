@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import LogoutButton from './logout-button'
 import ProjectsPanel from './projects-panel'
 import AiCoach from './ai-coach'
+import BillingCard from './billing-card'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -35,6 +36,7 @@ export default async function DashboardPage() {
         <LogoutButton />
         <ProjectsPanel />
         <AiCoach />
+        <BillingCard />
 
         <p className="mt-10 text-sm text-zinc-600">
           This page is private.
