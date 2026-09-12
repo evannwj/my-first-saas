@@ -1,9 +1,11 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center px-6">
       <div className="max-w-2xl text-center">
         <p className="text-sm font-semibold text-zinc-400 mb-4">
-         Kittykuan and Kayla
+          Kittykuan and Kayla
         </p>
 
         <h1 className="text-5xl font-bold tracking-tight">
@@ -14,14 +16,17 @@ export default function Home() {
           One founder. Tiny company. AI-powered.
         </p>
 
-        <button className="mt-8 rounded-xl bg-white px-6 py-3 font-semibold text-black hover:bg-zinc-200">
+        <Link
+          href="/login"
+          className="mt-8 inline-block rounded-xl bg-white px-6 py-3 font-semibold text-black hover:bg-zinc-200"
+        >
           Get Started
-        </button>
+        </Link>
 
         <p className="mt-10 text-sm text-zinc-600">
           Version 0.001
         </p>
       </div>
     </main>
-  );
+  )
 }
