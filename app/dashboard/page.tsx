@@ -1,0 +1,38 @@
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+
+export default async function DashboardPage() {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  return (
+    <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center px-6">
+      <div className="text-center">
+        <p className="text-zinc-400">Welcome to</p>
+
+        <h1 className="mt-2 text-5xl font-bold">
+          Kittykuan Dashboard
+        </h1>
+
+        <p className="mt-6 text-zinc-400">
+          Logged in as:
+        </p>
+
+        <p className="mt-2 text-lg font-semibold">
+          {user.email}
+        </p>
+
+        <p className="mt-10 text-sm text-zinc-600">
+          This page is private.
+        </p>
+      </div>
+    </main>
+  )
+}

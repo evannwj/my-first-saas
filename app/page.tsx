@@ -3,7 +3,7 @@ export default function Home() {
     <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center px-6">
       <div className="max-w-2xl text-center">
         <p className="text-sm font-semibold text-zinc-400 mb-4">
-          MY FIRST SaaS
+         Kittykuan and Kayla
         </p>
 
         <h1 className="text-5xl font-bold tracking-tight">
