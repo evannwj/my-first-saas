@@ -15,6 +15,8 @@ export default function ProjectsPanel() {
   const [projects, setProjects] = useState<Project[]>([])
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editingName, setEditingName] = useState('')
 
   async function loadProjects() {
     const {
@@ -73,6 +75,70 @@ export default function ProjectsPanel() {
     setMessage('Project created!')
   }
 
+  function startEditing(project: Project) {
+    setEditingId(project.id)
+    setEditingName(project.name)
+    setMessage('')
+  }
+
+  function cancelEditing() {
+    setEditingId(null)
+    setEditingName('')
+  }
+
+  async function saveProject(projectId: string) {
+    const cleanName = editingName.trim()
+
+    if (!cleanName) {
+      setMessage('Project name cannot be empty.')
+      return
+    }
+
+    const { error } = await supabase
+      .from('projects')
+      .update({ name: cleanName })
+      .eq('id', projectId)
+
+    if (error) {
+      setMessage(error.message)
+      return
+    }
+
+    setProjects((current) =>
+      current.map((project) =>
+        project.id === projectId
+          ? { ...project, name: cleanName }
+          : project
+      )
+    )
+
+    setEditingId(null)
+    setEditingName('')
+    setMessage('Project updated!')
+  }
+
+  async function deleteProject(projectId: string) {
+    const { error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', projectId)
+
+    if (error) {
+      setMessage(error.message)
+      return
+    }
+
+    setProjects((current) =>
+      current.filter((project) => project.id !== projectId)
+    )
+
+    if (editingId === projectId) {
+      cancelEditing()
+    }
+
+    setMessage('Project deleted!')
+  }
+
   useEffect(() => {
     loadProjects()
   }, [])
@@ -112,7 +178,51 @@ export default function ProjectsPanel() {
               key={project.id}
               className="rounded-xl border border-zinc-800 bg-zinc-900 p-4"
             >
-              {project.name}
+              {editingId === project.id ? (
+                <div className="space-y-3">
+                  <input
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2"
+                  />
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => saveProject(project.id)}
+                      className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black"
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      onClick={cancelEditing}
+                      className="rounded-lg border border-zinc-700 px-4 py-2 text-sm"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between gap-4">
+                  <span>{project.name}</span>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => startEditing(project)}
+                      className="rounded-lg border border-zinc-700 px-3 py-2 text-sm"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteProject(project.id)}
+                      className="rounded-lg border border-zinc-700 px-3 py-2 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         )}
